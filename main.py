@@ -2,7 +2,9 @@ from sqlalchemy import create_engine
 from sqlalchemy.orm import joinedload
 
 from config import read_config
-from models import Categoria, CategoriaRepository, Produto, ProdutoRepository
+from models import Categoria, Produto
+from repositories.CategoriaRepository import CategoriaRepository
+from repositories.ProdutoRepository import ProdutoRepository
 
 if __name__ == '__main__':
     config = read_config()
