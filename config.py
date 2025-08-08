@@ -20,6 +20,4 @@ def read_config() -> AppConfig:
         return AppConfig(url_bd=sqlalchemy_url)
     except Exception as e:
         print(f"Erro lendo o arquivo de configuração: {e}")
-        # Optionally, you can return None or raise the exception
-        # return None
         raise
