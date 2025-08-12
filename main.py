@@ -13,24 +13,33 @@ if __name__ == '__main__':
     produtoRepository = ProdutoRepository(engine)
     categoriaRepository = CategoriaRepository(engine)
 
-    # if categoriaRepository.count() > 0:
-    #     print("Categorias já existem no banco de dados.")
-    #     c = categoriaRepository.get_first()
-    # else:
-    #     c = Categoria()
-    #     c.nome = "Categoria Teste"
-    #     categoriaRepository.add(c)
-    #
-    # if produtoRepository.count() > 0:
-    #     print("Produtos já existem no banco de dados.")
-    # else:
-    #     p = Produto()
-    #     p.nome = "Produto Teste2"
-    #     p.preco = 10.99
-    #     p.estoque = 0
-    #     p.ativo = False
-    #     p.categoria = c
-    #     produtoRepository.add(p)
+    if categoriaRepository.count() == 0:
+        print("Populando as categorias...")
+        categs = [ "Categoria 1", "Categoria 2", "Categoria 3"]
+        for categ in categs:
+            c = Categoria()
+            c.nome = categ
+            categoriaRepository.add(c)
+    if produtoRepository.count() == 0:
+        print("Populando os produtos...")
+        prods = [ ("Produto teste 1", 10.99, 100, False, "Categoria 1"),
+                  ("Produto teste 2", 15.99, 43, True, "Categoria 1"),
+                  ("Produto teste 3", 4.35, -2, True, "Categoria 1"),
+                  ("Produto teste 4", 2.56, 0, True, "Categoria 2"),
+                  ("Produto teste 5", 30.11, 15, False, "Categoria 2"),
+                  ]
+        for prod in prods:
+            c = categoriaRepository.get_first(categoriaRepository.model.nome == prod[4])
+            if c:
+                p = Produto()
+                p.nome = prod[0]
+                p.preco = prod[1]
+                p.estoque = prod[2]
+                p.ativo = prod[3]
+                p.categoria = c
+                produtoRepository.add(p)
+            else:
+                print(f"Categoria '{prod[4]}' inexistente")
 
     print("Lista de produtos ==============================================")
     produtos = produtoRepository.get_all(load_options=[joinedload(Produto.categoria)])

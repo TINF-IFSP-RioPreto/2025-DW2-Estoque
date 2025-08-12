@@ -101,6 +101,17 @@ class ISQLAlchemyRepository(IRepository[T], ABC):
             session.add(entity)
             session.commit()
 
+    def bulk_add (self, entities: list[T]) -> None:
+        """
+        Adiciona múltiplas entidades, em lote, ao banco
+
+        Args:
+            entities (list[T]): Lista de entidades que vão ser adicionadas.
+        """
+        with Session(self._engine) as session:
+            session.bulk_save_objects(entities)
+            session.commit()
+
     def update(self, entity: T) -> None:
         with Session(self._engine) as session:
             session.merge(entity)
