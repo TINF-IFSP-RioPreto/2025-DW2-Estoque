@@ -44,7 +44,8 @@ class CategoriaRepository(ISQLAlchemyRepository[Categoria]):
                 return []
             lista_de_produtos = list(categoria.lista_de_produtos)
         else:
-            raise TypeError("O argumento para get_produtos deve ser um objeto Categoria ou um UUID.")
+            raise TypeError(
+                "O argumento para get_produtos deve ser um objeto Categoria ou um UUID.")
 
         if page and page_size:
             # Se houver page e page_size, paginamos os resultados.
@@ -56,3 +57,18 @@ class CategoriaRepository(ISQLAlchemyRepository[Categoria]):
         else:
             # Caso contrário, obtemos todos os produtos.
             return lista_de_produtos
+
+    def get_categorias_sem_produtos(self, page: int = None, page_size: int = None) -> list[Categoria]:
+        """
+        Obtém todas as categorias que não possuem produtos associados.
+
+        Args:
+            page (int, opcional): Número da página para paginação.
+            page_size (int, opcional): Tamanho da página para paginação.
+
+        Returns:
+            list[Categoria]: Lista de categorias sem produtos.
+        """
+        return self.get(predicate=~self.model.lista_de_produtos.any(),
+                        page=page,
+                        page_size=page_size)
