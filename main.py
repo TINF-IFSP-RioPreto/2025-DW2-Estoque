@@ -1,3 +1,19 @@
+"""
+Ponto de entrada principal da aplicação.
+
+Este script inicializa a conexão com o banco de dados, popula as tabelas
+com dados de exemplo (se estiverem vazias) e, em seguida, executa várias
+consultas para demonstrar as funcionalidades dos repositórios de Categoria
+e Produto.
+
+As operações demonstradas incluem:
+- Listar todos os produtos com suas categorias.
+- Filtrar produtos por uma faixa de preço.
+- Listar produtos de uma categoria específica.
+- Encontrar categorias que não têm produtos.
+- Listar produtos sem estoque.
+- Listar produtos inativos.
+"""
 from sqlalchemy import create_engine
 from sqlalchemy.orm import joinedload
 
@@ -51,9 +67,7 @@ if __name__ == '__main__':
     for p in produtos:
         print(f"Produto dentro do intervalo de preço: {p.nome}, Preço: {p.preco}")
 
-    c = categoriaRepository.get_first()
-    uma_categoria = categoriaRepository.get_by_id(c.id)  # 'c' é a categoria que criamos
-
+    uma_categoria = categoriaRepository.get_first()
     if uma_categoria:
         # Agora, passe o objeto inteiro para o metodo
         produtos_da_categoria = categoriaRepository.get_produtos(uma_categoria)

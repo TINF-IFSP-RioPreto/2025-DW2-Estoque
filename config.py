@@ -1,13 +1,39 @@
+"""
+Módulo de configuração para a aplicação.
+
+Este módulo é responsável por ler as configurações da aplicação,
+como a URL do banco de dados, a partir de um arquivo de configuração.
+"""
 import configparser
 from dataclasses import dataclass
 
 
 @dataclass
 class AppConfig:
+    """
+    DataClass para armazenar as configurações da aplicação.
+
+    Attributes:
+        url_bd (str): A URL de conexão com o banco de dados SQLAlchemy.
+    """
     url_bd: str
 
 
 def read_config() -> AppConfig:
+    """
+    Lê o arquivo de configuração e retorna um objeto AppConfig.
+
+    A função lê a URL do banco de dados da seção [alembic] do arquivo
+    `alembic.ini`.
+
+    Returns:
+        AppConfig: Um objeto com as configurações da aplicação.
+
+    Raises:
+        FileNotFoundError: Se o arquivo 'alembic.ini' não for encontrado.
+        KeyError: Se a seção 'alembic' ou a chave 'sqlalchemy.url' não
+                  forem encontradas no arquivo de configuração.
+    """
     app_config = configparser.ConfigParser()
     try:
         files_read = app_config.read("alembic.ini")
